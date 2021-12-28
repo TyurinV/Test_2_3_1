@@ -8,7 +8,8 @@
 <body>
 <h1>edit user</h1>
 
-<form th:method="POST" th:action="@{/edit}" th:object="${user}">
+<form th:method="POST" th:action="@{/admin/edit}" th:object="${user}">
+    <input type="hidden" name="id" th:field="${user.id}">
 
     <label for="firstName">Имя</label>
     <input type="text" th:field="*{firstName}" id="firstName">
@@ -22,7 +23,13 @@
     <label for="smoker">Курящий</label>
     <input type="checkbox" th:field = "*{smoker}" id = "smoker">
 
+    <label for="admin">Admin</label>
+    <input type="checkbox" name="roleAdmin" th:value="ROLE_ADMIN" id = "admin" >
+
     <input type="submit" value="Edit">
+</form>
+<form th:action="@{/logout}">
+    <button type="submit">logout</button>
 </form>
 </body>
 </html>

@@ -8,7 +8,7 @@
 <body>
 <h1>add user</h1>
 
-<form th:method="POST" th:action="@{/add}" th:object="${user}">
+<form th:method="POST" th:action="@{/admin/add}" th:object="${user}">
     <input type="hidden" name="id" th:field="${user.id}">
 
     <label for="firstName">Имя</label>
@@ -17,13 +17,23 @@
     <label for="lastName">Фамилия</label>
     <input type="text" th:field = "*{lastName}" id = "lastName">
 
+    <label for="password">Пароль</label>
+    <input type="text" th:field = "*{password}" id = "password">
+
     <label for="sex">Пол</label>
     <input type="text" th:field = "*{sex}" id = "sex">
 
     <label for="smoker">Курящий</label>
     <input type="checkbox" th:field = "*{smoker}" id = "smoker">
 
+    <label for="admin">Admin</label>
+    <input type="checkbox" name="roleAdmin" th:value="ROLE_ADMIN" id = "admin" >
+
     <input type="submit" value="Add">
+
+</form>
+<form th:action="@{/logout}">
+    <button type="submit">logout</button>
 </form>
 
 

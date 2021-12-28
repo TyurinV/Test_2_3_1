@@ -1,11 +1,12 @@
 package User.CRUD.service;
 
 import User.CRUD.model.User;
-import org.springframework.stereotype.Service;
+import org.springframework.security.core.userdetails.UserDetailsService;
+
 
 import java.util.List;
-@Service
-public interface UserService {
+
+public interface UserService extends UserDetailsService {
     List<User> allUsers();
     void add(User user);
     void remove(User user);

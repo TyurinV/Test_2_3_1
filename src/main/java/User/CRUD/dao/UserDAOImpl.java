@@ -45,4 +45,12 @@ public class UserDAOImpl implements UserDAO {
     public User getById(int id) {
         return em.find(User.class, id);
     }
+
+    @Override
+    public User getUserByName(String userName) {
+        return em
+                .createQuery("select us from User us where us.firstName = :username", User.class)
+                .setParameter("username", userName)
+                .getSingleResult();
+    }
 }

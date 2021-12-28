@@ -22,15 +22,17 @@
         <td th:utext="${user.getSex()}"></td>
         <td th:utext="${user.isSmoker()}"></td>
         <td>
-            <a th:href="@{'/edit/' + ${user.id}}">edit</a>
-            <a th:href="@{'/delete/' + ${user.id}}">delete</a>
+            <a th:href="@{'/admin/edit/' + ${user.id}}">edit</a>
+            <a th:href="@{'/admin/delete/' + ${user.id}}">delete</a>
         </td>
     </tr>
 </table>
 
 <h2> add </h2>
-<a th:href="${'/add'}">Add new</a>
-
+<a th:href="${'/admin/add'}">Add new</a>
+<form th:action="@{/logout}">
+    <button type="submit">logout</button>
+</form>
 
 </body>
 </html>
