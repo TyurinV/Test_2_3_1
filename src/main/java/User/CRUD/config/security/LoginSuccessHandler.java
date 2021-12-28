@@ -16,7 +16,6 @@ public class LoginSuccessHandler implements AuthenticationSuccessHandler {
     public void onAuthenticationSuccess(HttpServletRequest httpServletRequest,
                                         HttpServletResponse httpServletResponse,
                                         Authentication authentication) throws IOException {
-        //set our response to OK status
         httpServletResponse.setStatus(HttpServletResponse.SC_OK);
 
         boolean admin = false;
