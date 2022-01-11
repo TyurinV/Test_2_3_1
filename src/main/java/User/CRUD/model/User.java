@@ -44,6 +44,7 @@ public class User implements UserDetails {
     public User() {
     }
 
+
     public User(String firstName, String password, String lastName, char sex, boolean smoker, Set<Role> roles) {
         this.firstName = firstName;
         this.password = password;
@@ -154,12 +155,27 @@ public class User implements UserDetails {
     public boolean equals(Object o) {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
+
         User user = (User) o;
-        return getId() == user.getId() && getSex() == user.getSex() && isSmoker() == user.isSmoker() && Objects.equals(getFirstName(), user.getFirstName()) && Objects.equals(getPassword(), user.getPassword()) && Objects.equals(getLastName(), user.getLastName()) && Objects.equals(getRoles(), user.getRoles());
+
+        if (id != user.id) return false;
+        if (sex != user.sex) return false;
+        if (smoker != user.smoker) return false;
+        if (!firstName.equals(user.firstName)) return false;
+        if (!password.equals(user.password)) return false;
+        if (lastName != null ? !lastName.equals(user.lastName) : user.lastName != null) return false;
+        return roles != null ? roles.equals(user.roles) : user.roles == null;
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(getId(), getFirstName(), getPassword(), getLastName(), getSex(), isSmoker(), getRoles());
+        int result = id;
+        result = 31 * result + firstName.hashCode();
+        result = 31 * result + password.hashCode();
+        result = 31 * result + (lastName != null ? lastName.hashCode() : 0);
+        result = 31 * result + (int) sex;
+        result = 31 * result + (smoker ? 1 : 0);
+        result = 31 * result + (roles != null ? roles.hashCode() : 0);
+        return result;
     }
 }
