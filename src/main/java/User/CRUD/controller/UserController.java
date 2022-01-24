@@ -4,6 +4,7 @@ package User.CRUD.controller;
 import User.CRUD.model.User;
 import User.CRUD.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.ui.ModelMap;
@@ -16,16 +17,16 @@ import java.util.List;
 @RequestMapping("/user")
 public class UserController {
 
-    private final UserService userService;
+    private final UserDetailsService userDetailsService;
 
     @Autowired
-    public UserController(UserService userService) {
-        this.userService = userService;
+    public UserController(UserDetailsService userDetailsService) {
+        this.userDetailsService = userDetailsService;
     }
 
     @GetMapping(value = "/")
-    public String getUserPage2(ModelMap modelMap, Principal principal) {
-        modelMap.addAttribute("user", userService.loadUserByUsername(principal.getName()));
+    public String getUserPage(ModelMap modelMap, Principal principal) {
+        modelMap.addAttribute("user", userDetailsService.loadUserByUsername(principal.getName()));
         return "profile";
     }
 

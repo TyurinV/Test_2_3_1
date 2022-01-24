@@ -6,10 +6,10 @@ import org.springframework.security.core.userdetails.UserDetailsService;
 
 import java.util.List;
 
-public interface UserService extends UserDetailsService {
-    List<User> allUsers();
+public interface UserService {
+    List<User> getAllUsers();
     void add(User user);
-    void remove(User user);
+    void remove(Long id);
     void edit(User user);
-    User getById(int id);
+    User getById(Long id);
 }

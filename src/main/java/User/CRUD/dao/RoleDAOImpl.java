@@ -19,7 +19,7 @@ public class RoleDAOImpl implements RoleDAO {
     public Role getRoleByName(String name) {
 
         return em
-                .createQuery("from Role where Role.roleName=:name", Role.class)
+                .createQuery("SELECT r from Role r where r.roleName=:name", Role.class)
                 .setParameter("name", name)
                 .getSingleResult();
     }

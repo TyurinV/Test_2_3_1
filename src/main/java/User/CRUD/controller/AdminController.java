@@ -5,6 +5,7 @@ import User.CRUD.model.User;
 import User.CRUD.service.RoleService;
 import User.CRUD.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
@@ -18,20 +19,37 @@ import java.util.Set;
 @RequestMapping("/admin")
 public class AdminController {
 
-    @Autowired
+
     private UserService userService;
+
     @Autowired
+    public void setUserService(UserService userService) {
+        this.userService = userService;
+    }
+
     private RoleService roleService;
 
+    @Autowired
+    public void setRoleService(RoleService roleService) {
+        this.roleService = roleService;
+    }
+
+    private PasswordEncoder passwordEncoder;
+
+    @Autowired
+    public void setPasswordEncoder(PasswordEncoder passwordEncoder) {
+        this.passwordEncoder = passwordEncoder;
+    }
+
     @GetMapping(value = "/")
-    public String allUsers(Model model) {
-        List<User> users = userService.allUsers();
+    public String getAllUsers(Model model) {
+        List<User> users = userService.getAllUsers();
         model.addAttribute("userList", users);
         return "allusers";
     }
 
     @GetMapping(value = "/edit/{id}")
-    public String editPage(@PathVariable int id, Model model) {
+    public String editPage(@PathVariable Long id, Model model) {
         User user = userService.getById(id);
         model.addAttribute("user", user);
         return "edit";
@@ -40,9 +58,9 @@ public class AdminController {
     @PostMapping(value = "/edit")
     public String editUser(@ModelAttribute("user") User user, @RequestParam(required = false) String roleAdmin) {
         Set<Role> roles = new HashSet<>();
-        roles.add(roleService.getRoleById(2l));
-        if (roleAdmin != null ) {
-            roles.add(roleService.getRoleById(1l));
+        roles.add(roleService.getRoleByName("ROLE_USER"));
+        if (roleAdmin != null) {
+            roles.add(roleService.getRoleByName("ROLE_ADMIN"));
         }
         user.setRoles(roles);
         userService.edit(user);
@@ -57,22 +75,22 @@ public class AdminController {
 
     @PostMapping(value = "/add")
     public String addUser(@ModelAttribute("user") User user, @RequestParam(required = false) String roleAdmin) {
-
-            Set<Role> roles = new HashSet<>();
-            roles.add(roleService.getRoleById(2l));
-            if (roleAdmin != null ) {
-                roles.add(roleService.getRoleById(1l));
-            }
-            user.setRoles(roles);
-            userService.add(user);
+        String hashedPassword = passwordEncoder.encode(user.getPassword());
+        Set<Role> roles = new HashSet<>();
+        roles.add(roleService.getRoleByName("ROLE_USER"));
+        if (roleAdmin != null) {
+            roles.add(roleService.getRoleByName("ROLE_ADMIN"));
+        }
+        user.setRoles(roles);
+        user.setPassword(hashedPassword);
+        userService.add(user);
         return "redirect:/admin/";
     }
 
 
     @GetMapping(value = "/delete/{id}")
-    public String deleteUser(@PathVariable int id) {
-        User user = userService.getById(id);
-        userService.remove(user);
+    public String deleteUser(@PathVariable Long id) {
+        userService.remove(id);
         return "redirect:/admin/";
     }
 }

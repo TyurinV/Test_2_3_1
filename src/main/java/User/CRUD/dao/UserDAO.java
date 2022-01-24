@@ -5,10 +5,10 @@ import org.springframework.stereotype.Repository;
 
 import java.util.List;
 public interface UserDAO {
-    List<User> allUsers();
+    List<User> getAllUsers();
     void add(User user);
-    void remove(User user);
+    void remove(Long id);
     void edit(User user);
-    User getById(int id);
+    User getById(Long id);
     User getUserByName(String userName);
 }

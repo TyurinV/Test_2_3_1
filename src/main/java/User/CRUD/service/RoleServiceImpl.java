@@ -20,21 +20,25 @@ public class RoleServiceImpl implements RoleService {
     }
 
     @Override
+    @Transactional(readOnly = true)
     public Role getRoleByName(String name) {
         return this.roleDAO.getRoleByName(name);
     }
 
     @Override
+    @Transactional
     public void addRole(Role role) {
         roleDAO.addRole(role);
     }
 
     @Override
+    @Transactional(readOnly = true)
     public Role getRoleById(Long id) {
         return this.roleDAO.getRoleById(id);
     }
 
     @Override
+    @Transactional
     public List<Role> allRoles() {
         return this.roleDAO.allRoles();
     }

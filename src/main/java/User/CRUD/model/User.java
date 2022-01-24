@@ -1,5 +1,7 @@
 package User.CRUD.model;
 
+import org.hibernate.annotations.Fetch;
+import org.hibernate.annotations.FetchMode;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 
@@ -16,7 +18,7 @@ public class User implements UserDetails {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "id")
-    private int id;
+    private Long id;
 
     @Column(name = "firstName", unique = true)
     private String firstName;
@@ -32,8 +34,7 @@ public class User implements UserDetails {
 
     @Column(name = "smoker", nullable = false)
     private boolean smoker;
-
-    @ManyToMany(fetch = FetchType.EAGER, cascade = CascadeType.REFRESH)
+    @ManyToMany(fetch = FetchType.EAGER, cascade = {CascadeType.PERSIST, CascadeType.MERGE})
     @JoinTable(
             name = "user_role",
             joinColumns = { @JoinColumn(name = "user_id") },
@@ -54,11 +55,11 @@ public class User implements UserDetails {
         this.roles = roles;
     }
 
-    public int getId() {
+    public Long getId() {
         return id;
     }
 
-    public void setId(int id) {
+    public void setId(Long id) {
         this.id = id;
     }
 
@@ -169,7 +170,7 @@ public class User implements UserDetails {
 
     @Override
     public int hashCode() {
-        int result = id;
+        int result = id.hashCode();
         result = 31 * result + firstName.hashCode();
         result = 31 * result + password.hashCode();
         result = 31 * result + (lastName != null ? lastName.hashCode() : 0);

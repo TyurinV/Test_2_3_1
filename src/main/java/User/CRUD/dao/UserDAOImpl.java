@@ -1,5 +1,6 @@
 package User.CRUD.dao;
 
+import User.CRUD.model.Role;
 import User.CRUD.model.User;
 
 import org.springframework.stereotype.Component;
@@ -8,6 +9,7 @@ import org.springframework.transaction.annotation.Transactional;
 
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
+import java.util.LinkedList;
 import java.util.List;
 
 @Repository
@@ -17,8 +19,9 @@ public class UserDAOImpl implements UserDAO {
     private EntityManager em;
 
     @Override
-    public List<User> allUsers() {
-        return em.createQuery("from User").getResultList();
+    public List<User> getAllUsers() {
+        List<User> one = em.createQuery("SELECT u FROM User u JOIN FETCH u.roles ", User.class).getResultList();
+        return one;
     }
 
     @Override
@@ -27,8 +30,8 @@ public class UserDAOImpl implements UserDAO {
     }
 
     @Override
-    public void remove(User user) {
-        em.remove(em.contains(user) ? user : em.merge(user));
+    public void remove(Long id) {
+        em.remove(em.find(User.class, id));
     }
 
     @Override
@@ -38,7 +41,7 @@ public class UserDAOImpl implements UserDAO {
     }
 
     @Override
-    public User getById(int id) {
+    public User getById(Long id) {
         return em.find(User.class, id);
     }
 
